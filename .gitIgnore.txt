@@ -1,0 +1,63 @@
+# Build results
+bin/
+obj/
+Debug/
+Release/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.suo
+*.tmp
+*.bak
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+
+# Visual Studio
+.vs/
+*.vcxproj*
+*.csproj.user
+*.csproj.ide
+*.csproj.nosync
+*.dbmdl
+*.opendb
+*.suo
+*.user
+*.userosscache
+*.suo
+
+# NuGet Packages
+*.nupkg
+packages/
+*.snupkg
+
+# ASP.NET-specific
+*.config
+web.config
+*.config.user
+
+# Logs and temporary files
+*.log
+*.cache
+*.tmp
+*.swp
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# JetBrains Rider
+.idea/
+
+# Miscellaneous
+Desktop.ini
+
+# End of .gitignore

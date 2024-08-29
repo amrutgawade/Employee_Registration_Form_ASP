@@ -34,6 +34,7 @@
             border-radius: 5px;
             padding: 2rem;
             width: 90%;
+            overflow: auto;
             margin: 2rem auto;
             background-color: white;
         }
@@ -41,7 +42,9 @@
         #EmployeeDetails {
             font-weight: normal;
             font-style: normal;
-            font-size: 0.7rem
+            font-size: 0.7rem;
+            border-collapse: collapse;
+            width: 100%;
         }
 
             #EmployeeDetails tbody th, td {
@@ -88,7 +91,7 @@
         .form-column {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1.2rem;
         }
 
         .btn-group {
@@ -105,6 +108,13 @@
         .btn {
             padding: 0.4rem 0.6rem;
             outline: none;
+            border-radius: 5px;
+        }
+        
+        .btn-sm {
+            padding: 0.2rem 0.4rem;
+            outline: none;
+            font-size: 0.7rem;
             border-radius: 5px;
         }
 
@@ -220,7 +230,7 @@
         </div>
         <div id="grid-view">
             <h2>Employee Details</h2>
-            <asp:GridView ID="EmployeeDetails" Width="100%" runat="server" AllowCustomPaging="true" EnableModelValidation="true" EmptyDataText="No Records" AutoGenerateColumns="false" DataKeyNames="emp_id">
+            <asp:GridView ID="EmployeeDetails" runat="server" AllowCustomPaging="true" EnableModelValidation="true" EmptyDataText="No Records" AutoGenerateColumns="false" DataKeyNames="emp_id" OnRowCommand="btnDelete_Click">
                 <Columns>
                     <asp:BoundField DataField="emp_id" HeaderText="Id" />
                     <asp:BoundField DataField="emp_name" HeaderText="Name" />
@@ -239,8 +249,8 @@
                     <asp:TemplateField HeaderText="Action">
                         <ItemTemplate>
                             <div class="btn-group-action">
-                                <asp:Button ID="btnEdit" CssClass="btn btn-primary" runat="server" Text="Edit" />
-                                <asp:Button ID="btnDelete" runat="server" CssClass="btn btn-denger" Text="Delete" />
+                                <asp:Button ID="btnEdit" CssClass="btn-sm btn-primary" runat="server" Text="Edit" />
+                                <asp:Button ID="btnDelete" runat="server" CssClass="btn-sm btn-denger" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" Text="Delete" OnClientClick="return confirm('Are you sure?');" />
                             </div>
                         </ItemTemplate>
                     </asp:TemplateField>

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
@@ -47,7 +50,9 @@ namespace Employee_Registration
                         ddlCountries.DataBind();
 
                         // Optionally add a default item
-                        ddlCountries.Items.Insert(0, new ListItem("Select Country", ""));
+                        ddlCountries.Items.Insert(0, new ListItem("Select Country", "0"));
+                        ddlStates.Items.Insert(0, new ListItem("Select State", "0"));
+                        ddlCities.Items.Insert(0, new ListItem("Select City", "0"));
                     }
                 }
                 catch (Exception ex)
@@ -335,8 +340,10 @@ namespace Employee_Registration
             tbMobile.Text = null;
             rblGender.ClearSelection();
             ddlCountries.SelectedIndex = 0;
-            ddlStates.SelectedIndex = 0;
-            ddlCities.SelectedIndex = 0;
+            ddlStates.Items.Clear();
+            ddlStates.Items.Insert(0, new ListItem("Select State", "0"));
+            ddlCities.Items.Clear();
+            ddlCities.Items.Insert(0, new ListItem("Select City", "0"));
             tbAddress.Text = string.Empty;
             tbPincode.Text = string.Empty;
             ddlEmployeeType.SelectedIndex = 0;
@@ -348,5 +355,32 @@ namespace Employee_Registration
             ClearForm();
         }
 
+        protected void btnDelete_Click(object sender, GridViewCommandEventArgs e)
+        {
+            int rowIndex = Convert.ToInt32(e.CommandArgument);
+            GridViewRow row = EmployeeDetails.Rows[rowIndex];
+            int emp_id = Convert.ToInt32(EmployeeDetails.DataKeys[rowIndex].Value);
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("SP_DeleteEmployee_Amrut", conn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@emp_id", emp_id);
+                        cmd.Parameters.AddWithValue("@is_active", 0);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        BindGridView();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

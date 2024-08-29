@@ -23,6 +23,7 @@ namespace Employee_Registration
                 BindJobType();
                 BindEmployeeType();
                 BindGender();
+                BindGridView();
             }
         }
 
@@ -209,6 +210,31 @@ namespace Employee_Registration
             }
         }
 
+        private void BindGridView()
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand("SP_GetEmployeeDetails_Amrut", con))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        SqlDataAdapter ds = new SqlDataAdapter(cmd);
+                        DataSet dt = new DataSet();
+                        ds.Fill(dt);
+
+                        EmployeeDetails.DataSource = dt.Tables[0];
+                        EmployeeDetails.DataBind();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log the detailed error
+                    Console.WriteLine("An error occurred: " + ex.Message);
+                }
+            }
+        }
         protected void ddlCountries_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -289,6 +315,7 @@ namespace Employee_Registration
 
                         conn.Open();
                         cmd.ExecuteNonQuery();
+                        BindGridView();
                         ClearForm();
                     }
                 }
@@ -320,5 +347,6 @@ namespace Employee_Registration
         {
             ClearForm();
         }
+
     }
 }

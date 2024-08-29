@@ -20,14 +20,33 @@
             background-color: aliceblue;
         }
 
-        #form1 {
+        #register-form {
             border: 1px solid skyblue;
             border-radius: 5px;
             padding: 2rem;
-            width: 50%;
+            width: 90%;
             margin: 2rem auto;
             background-color: white;
         }
+
+        #grid-view {
+            border: 1px solid skyblue;
+            border-radius: 5px;
+            padding: 2rem;
+            width: 90%;
+            margin: 2rem auto;
+            background-color: white;
+        }
+
+        #EmployeeDetails {
+            font-weight: normal;
+            font-style: normal;
+            font-size: 0.7rem
+        }
+
+            #EmployeeDetails tbody th, td {
+                padding: 0.4rem;
+            }
 
         h1 {
             margin: 1rem 0 3rem 0;
@@ -40,14 +59,13 @@
         .gender tbody {
             display: flex;
             flex-direction: row;
+            height: 1.8rem;
         }
 
         .form-control {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin-left: auto;
-            margin-right: auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-column-gap: 4rem
         }
 
         .form-group {
@@ -67,13 +85,7 @@
                 border: 1px solid blue;
             }
 
-        .form-control-left {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .form-control-right {
+        .form-column {
             display: flex;
             flex-direction: column;
             gap: 2rem;
@@ -81,9 +93,13 @@
 
         .btn-group {
             display: flex;
-            gap: 20px;
-            padding: 0 4rem;
+            gap: 2rem;
             margin: 1.6rem 0 1rem 0;
+        }
+
+        .btn-group-action {
+            display: flex;
+            gap: 0.6rem;
         }
 
         .btn {
@@ -106,30 +122,38 @@
 
         .btn-secondary {
             background-color: white;
-            border: 1px solid blue;
+            border: 1px solid black;
             color: black;
         }
 
             .btn-secondary:hover {
-                background-color: whitesmoke;
-                border: 1px solid blue;
-                color: black;
+                background-color: black;
+                border: 1px solid white;
+                color: white;
+            }
+
+        .btn-denger {
+            background-color: white;
+            border: 1px solid red;
+            color: red;
+        }
+
+            .btn-denger:hover {
+                background-color: red;
+                border: 1px solid white;
+                color: white;
             }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
+        <div id="register-form">
             <h1 class="text-center">Employee Registration</h1>
             <div class="form-control">
-                <div class="form-control-left">
+                <div class="form-column">
                     <div class="form-group">
                         <asp:Label ID="LabelFullname" runat="server" Text="Full Name"></asp:Label>
                         <asp:TextBox ID="tbName" CssClass="input-text" runat="server"></asp:TextBox>
-                    </div>
-                    <div class="form-group">
-                        <asp:Label ID="LabelDOB" runat="server" Text="Date of Birth"></asp:Label>
-                        <asp:TextBox ID="tbDOB" CssClass="input-text" TextMode="Date" runat="server"></asp:TextBox>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelGender" runat="server" Text="Gender"></asp:Label>
@@ -142,8 +166,25 @@
                         </asp:DropDownList>
                     </div>
                     <div class="form-group">
-                        <asp:Label ID="LabelAddress" runat="server" Text="Address"></asp:Label>
-                        <asp:TextBox ID="tbAddress" CssClass="input-text" runat="server"></asp:TextBox>
+                        <asp:Label ID="LabelPincode" runat="server" Text="Pincode"></asp:Label>
+                        <asp:TextBox ID="tbPincode" CssClass="input-text" runat="server"></asp:TextBox>
+                    </div>
+                </div>
+
+                <div class="form-column">
+                    <div class="form-group">
+                        <asp:Label ID="LabelEmail" runat="server" Text="Email"></asp:Label>
+                        <asp:TextBox ID="tbEmail" CssClass="input-text" TextMode="Email" runat="server"></asp:TextBox>
+                    </div>
+                    <div class="form-group">
+                        <asp:Label ID="LabelDOB" runat="server" Text="Date of Birth"></asp:Label>
+                        <asp:TextBox ID="tbDOB" CssClass="input-text" TextMode="Date" runat="server"></asp:TextBox>
+                    </div>
+
+                    <div class="form-group">
+                        <asp:Label ID="LabelCity" runat="server" Text="City"></asp:Label>
+                        <asp:DropDownList ID="ddlCities" CssClass="input-text" runat="server">
+                        </asp:DropDownList>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelEmployeeType" runat="server" Text="Employee Type"></asp:Label>
@@ -152,11 +193,7 @@
                     </div>
                 </div>
 
-                <div class="form-control-right">
-                    <div class="form-group">
-                        <asp:Label ID="LabelEmail" runat="server" Text="Email"></asp:Label>
-                        <asp:TextBox ID="tbEmail" CssClass="input-text" TextMode="Email" runat="server"></asp:TextBox>
-                    </div>
+                <div class="form-column">
                     <div class="form-group">
                         <asp:Label ID="LabelMobile" runat="server" Text="Mobile"></asp:Label>
                         <asp:TextBox ID="tbMobile" CssClass="input-text" TextMode="Phone" runat="server"></asp:TextBox>
@@ -166,13 +203,8 @@
                         <asp:DropDownList ID="ddlCountries" DataTextField="country_name" AutoPostBack="true" DataValueField="country_id" OnSelectedIndexChanged="ddlCountries_SelectedIndexChanged" CssClass="input-text" runat="server"></asp:DropDownList>
                     </div>
                     <div class="form-group">
-                        <asp:Label ID="LabelCity" runat="server" Text="City"></asp:Label>
-                        <asp:DropDownList ID="ddlCities" CssClass="input-text" runat="server">
-                        </asp:DropDownList>
-                    </div>
-                    <div class="form-group">
-                        <asp:Label ID="LabelPincode" runat="server" Text="Pincode"></asp:Label>
-                        <asp:TextBox ID="tbPincode" CssClass="input-text" runat="server"></asp:TextBox>
+                        <asp:Label ID="LabelAddress" runat="server" Text="Address"></asp:Label>
+                        <asp:TextBox ID="tbAddress" CssClass="input-text" runat="server"></asp:TextBox>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelJobType" runat="server" Text="Job Type"></asp:Label>
@@ -185,6 +217,35 @@
                 <asp:Button CssClass="btn btn-primary" ID="btnSubmit" OnClick="btnSubmit_Click" runat="server" Text="Submit" />
                 <asp:Button CssClass="btn btn-secondary" ID="btnCancel" OnClick="btnCancel_Click" runat="server" Text="Cancel" />
             </div>
+        </div>
+        <div id="grid-view">
+            <h2>Employee Details</h2>
+            <asp:GridView ID="EmployeeDetails" Width="100%" runat="server" AllowCustomPaging="true" EnableModelValidation="true" EmptyDataText="No Records" AutoGenerateColumns="false" DataKeyNames="emp_id">
+                <Columns>
+                    <asp:BoundField DataField="emp_id" HeaderText="Id" />
+                    <asp:BoundField DataField="emp_name" HeaderText="Name" />
+                    <asp:BoundField DataField="emp_email" HeaderText="Email" />
+                    <asp:BoundField DataField="emp_mobile" HeaderText="Mobile" />
+                    <asp:BoundField DataField="dob" HeaderText="DOB" />
+                    <asp:BoundField DataField="gender" HeaderText="Gender" />
+                    <asp:BoundField DataField="address" HeaderText="Address" />
+                    <asp:BoundField DataField="country" HeaderText="Country" />
+                    <asp:BoundField DataField="state" HeaderText="State" />
+                    <asp:BoundField DataField="city" HeaderText="City" />
+                    <asp:BoundField DataField="pincode" HeaderText="Pincode" />
+                    <asp:BoundField DataField="emp_type" HeaderText="Employee Type" />
+                    <asp:BoundField DataField="job_type" HeaderText="Job Type" />
+
+                    <asp:TemplateField HeaderText="Action">
+                        <ItemTemplate>
+                            <div class="btn-group-action">
+                                <asp:Button ID="btnEdit" CssClass="btn btn-primary" runat="server" Text="Edit" />
+                                <asp:Button ID="btnDelete" runat="server" CssClass="btn btn-denger" Text="Delete" />
+                            </div>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+            </asp:GridView>
         </div>
     </form>
 </body>

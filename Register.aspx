@@ -5,10 +5,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Register</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
     <style>
-        body{
+        html {
+            font-family: "Comfortaa", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
             background-color: aliceblue;
         }
+
         #form1 {
             border: 1px solid skyblue;
             border-radius: 5px;
@@ -19,15 +30,16 @@
         }
 
         h1 {
-            margin: 2rem 0;
+            margin: 1rem 0 3rem 0;
         }
 
         .text-center {
             text-align: center;
         }
 
-        .inline-flex{
-            display:inline-flex;
+        .gender tbody {
+            display: flex;
+            flex-direction: row;
         }
 
         .form-control {
@@ -70,8 +82,8 @@
         .btn-group {
             display: flex;
             gap: 20px;
-            margin-top: 1.2rem;
-            margin-left: 4rem;
+            padding: 0 4rem;
+            margin: 1.6rem 0 1rem 0;
         }
 
         .btn {
@@ -112,68 +124,66 @@
             <div class="form-control">
                 <div class="form-control-left">
                     <div class="form-group">
-                        <asp:Label ID="Label1" runat="server" Text="Full Name"></asp:Label>
-                        <asp:TextBox ID="TextBox1" CssClass="input-text" runat="server"></asp:TextBox>
+                        <asp:Label ID="LabelFullname" runat="server" Text="Full Name"></asp:Label>
+                        <asp:TextBox ID="tbName" CssClass="input-text" runat="server"></asp:TextBox>
                     </div>
                     <div class="form-group">
-                        <asp:Label ID="Label2" runat="server" Text="Date of Birth"></asp:Label>
-                        <asp:TextBox ID="TextBox2" CssClass="input-text" TextMode="Date" runat="server"></asp:TextBox>
+                        <asp:Label ID="LabelDOB" runat="server" Text="Date of Birth"></asp:Label>
+                        <asp:TextBox ID="tbDOB" CssClass="input-text" TextMode="Date" runat="server"></asp:TextBox>
                     </div>
                     <div class="form-group">
-                        <asp:Label ID="Label9" runat="server" Text="Country"></asp:Label>
-                        <asp:DropDownList ID="ddlCountries" DataTextField="country_name" AutoPostBack="true" DataValueField="country_id" OnSelectedIndexChanged="ddlCountries_SelectedIndexChanged" CssClass="input-text" runat="server"></asp:DropDownList>
+                        <asp:Label ID="LabelGender" runat="server" Text="Gender"></asp:Label>
+                        <asp:RadioButtonList CssClass="gender" ID="rblGender" runat="server">
+                        </asp:RadioButtonList>
                     </div>
                     <div class="form-group">
-                        <asp:Label ID="Label11" runat="server" Text="City"></asp:Label>
-                        <asp:DropDownList ID="ddlCities" CssClass="input-text" runat="server">
+                        <asp:Label ID="LabelState" runat="server" Text="State"></asp:Label>
+                        <asp:DropDownList ID="ddlStates" DataTextField="state_name" AutoPostBack="true" DataValueField="state_id" OnSelectedIndexChanged="ddlStates_SelectedIndexChanged" CssClass="input-text" runat="server">
                         </asp:DropDownList>
                     </div>
                     <div class="form-group">
-                        <asp:Label ID="Label7" runat="server" Text="Pincode"></asp:Label>
-                        <asp:TextBox ID="tb_Pincode" CssClass="input-text" runat="server"></asp:TextBox>
+                        <asp:Label ID="LabelAddress" runat="server" Text="Address"></asp:Label>
+                        <asp:TextBox ID="tbAddress" CssClass="input-text" runat="server"></asp:TextBox>
                     </div>
                     <div class="form-group">
-                        <asp:Label ID="Label5" runat="server" Text="Gender"></asp:Label>
-                        <div>
-                            <asp:RadioButtonList ID="rblGender" runat="server">
-                            </asp:RadioButtonList>
-                        </div>
+                        <asp:Label ID="LabelEmployeeType" runat="server" Text="Employee Type"></asp:Label>
+                        <asp:DropDownList ID="ddlEmployeeType" CssClass="input-text" runat="server">
+                        </asp:DropDownList>
                     </div>
                 </div>
 
                 <div class="form-control-right">
                     <div class="form-group">
-                        <asp:Label ID="Label3" runat="server" Text="Email"></asp:Label>
-                        <asp:TextBox ID="TextBox3" CssClass="input-text" TextMode="Email" runat="server"></asp:TextBox>
+                        <asp:Label ID="LabelEmail" runat="server" Text="Email"></asp:Label>
+                        <asp:TextBox ID="tbEmail" CssClass="input-text" TextMode="Email" runat="server"></asp:TextBox>
                     </div>
                     <div class="form-group">
-                        <asp:Label ID="Label4" runat="server" Text="Mobile"></asp:Label>
-                        <asp:TextBox ID="TextBox4" CssClass="input-text" TextMode="Phone" runat="server"></asp:TextBox>
+                        <asp:Label ID="LabelMobile" runat="server" Text="Mobile"></asp:Label>
+                        <asp:TextBox ID="tbMobile" CssClass="input-text" TextMode="Phone" runat="server"></asp:TextBox>
                     </div>
                     <div class="form-group">
-                        <asp:Label ID="Label10" runat="server" Text="State"></asp:Label>
-                        <asp:DropDownList ID="ddlStates" DataTextField="state_name" AutoPostBack="true" DataValueField="state_id" OnSelectedIndexChanged="ddlStates_SelectedIndexChanged" CssClass="input-text" runat="server">
+                        <asp:Label ID="LabelCountry" runat="server" Text="Country"></asp:Label>
+                        <asp:DropDownList ID="ddlCountries" DataTextField="country_name" AutoPostBack="true" DataValueField="country_id" OnSelectedIndexChanged="ddlCountries_SelectedIndexChanged" CssClass="input-text" runat="server"></asp:DropDownList>
+                    </div>
+                    <div class="form-group">
+                        <asp:Label ID="LabelCity" runat="server" Text="City"></asp:Label>
+                        <asp:DropDownList ID="ddlCities" CssClass="input-text" runat="server">
                         </asp:DropDownList>
                     </div>
                     <div class="form-group">
-                        <asp:Label ID="Label6" runat="server" Text="Address"></asp:Label>
-                        <asp:TextBox ID="tb_Address" CssClass="input-text" runat="server"></asp:TextBox>
+                        <asp:Label ID="LabelPincode" runat="server" Text="Pincode"></asp:Label>
+                        <asp:TextBox ID="tbPincode" CssClass="input-text" runat="server"></asp:TextBox>
                     </div>
                     <div class="form-group">
-                        <asp:Label ID="Label12" runat="server" Text="Job Type"></asp:Label>
+                        <asp:Label ID="LabelJobType" runat="server" Text="Job Type"></asp:Label>
                         <asp:DropDownList ID="ddlJobType" CssClass="input-text" runat="server">
-                        </asp:DropDownList>
-                    </div>
-                    <div class="form-group">
-                        <asp:Label ID="Label13" runat="server" Text="Employee Type"></asp:Label>
-                        <asp:DropDownList ID="ddlEmployeeType" CssClass="input-text" runat="server">
                         </asp:DropDownList>
                     </div>
                 </div>
             </div>
             <div class="btn-group">
-                <asp:Button CssClass="btn btn-primary" ID="Submit" runat="server" Text="Submit" />
-                <asp:Button CssClass="btn btn-secondary" ID="Cancel" runat="server" Text="Cancel" />
+                <asp:Button CssClass="btn btn-primary" ID="btnSubmit" OnClick="btnSubmit_Click" runat="server" Text="Submit" />
+                <asp:Button CssClass="btn btn-secondary" ID="btnCancel" OnClick="btnCancel_Click" runat="server" Text="Cancel" />
             </div>
         </div>
     </form>

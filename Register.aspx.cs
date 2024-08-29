@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 namespace Employee_Registration
 {
@@ -96,7 +97,7 @@ namespace Employee_Registration
                     using (SqlCommand cmd = new SqlCommand("SP_GetCity_Amrut", con))
                     {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue ("@state_id", state_id);
+                        cmd.Parameters.AddWithValue("@state_id", state_id);
                         SqlDataAdapter ds = new SqlDataAdapter(cmd);
                         DataTable dt = new DataTable();
                         ds.Fill(dt);
@@ -248,6 +249,76 @@ namespace Employee_Registration
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            string name = tbName.Text;
+            string email = tbEmail.Text;
+            string dob = tbDOB.Text;
+            string mobile = tbMobile.Text;
+            string gender = rblGender.Text;
+            int country = int.Parse(ddlCountries.SelectedValue);
+            int state = int.Parse(ddlStates.SelectedValue);
+            int city = int.Parse(ddlCities.SelectedValue);
+            string address = tbAddress.Text;
+            string pincode = tbPincode.Text;
+            int emp_type = int.Parse(ddlEmployeeType.SelectedValue);
+            int job_type = int.Parse(ddlJobType.SelectedValue);
+
+            // Connection string to your database
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("SP_SaveEmployee_Amrut", conn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@emp_name", name);
+                        cmd.Parameters.AddWithValue("@emp_email", email);
+                        cmd.Parameters.AddWithValue("@emp_mobile", mobile);
+                        cmd.Parameters.AddWithValue("@dob", dob);
+                        cmd.Parameters.AddWithValue("@gender", gender);
+                        cmd.Parameters.AddWithValue("@emp_type", emp_type);
+                        cmd.Parameters.AddWithValue("@job_type", job_type);
+                        cmd.Parameters.AddWithValue("@address", address);
+                        cmd.Parameters.AddWithValue("@country", country);
+                        cmd.Parameters.AddWithValue("@state", state);
+                        cmd.Parameters.AddWithValue("@city", city);
+                        cmd.Parameters.AddWithValue("@pincode", pincode);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        ClearForm();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void ClearForm()
+        {
+            tbName.Text = string.Empty;
+            tbEmail.Text = string.Empty;
+            tbDOB.Text = string.Empty;
+            tbMobile.Text = null;
+            rblGender.ClearSelection();
+            ddlCountries.SelectedIndex = 0;
+            ddlStates.SelectedIndex = 0;
+            ddlCities.SelectedIndex = 0;
+            tbAddress.Text = string.Empty;
+            tbPincode.Text = string.Empty;
+            ddlEmployeeType.SelectedIndex = 0;
+            ddlJobType.SelectedIndex = 0;
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            ClearForm();
         }
     }
 }

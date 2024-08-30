@@ -39,6 +39,10 @@
             background-color: white;
         }
 
+            #grid-view h2 {
+                margin: 0 0 0.6rem 0;
+            }
+
         #EmployeeDetails {
             font-weight: normal;
             font-style: normal;
@@ -51,7 +55,7 @@
                 padding: 0.4rem;
             }
 
-        h1 {
+        #register-form > h1 {
             margin: 1rem 0 3rem 0;
         }
 
@@ -111,6 +115,16 @@
             border-radius: 5px;
         }
 
+        .btn-lg {
+            display: inline-block;
+            width: fit-content;
+            margin: 1rem auto 0 auto;
+            padding: 0.8rem 1rem;
+            outline: none;
+            font-size: 1.2rem;
+            border-radius: 5px;
+        }
+
         .btn-sm {
             padding: 0.2rem 0.4rem;
             outline: none;
@@ -153,10 +167,124 @@
                 border: 1px solid white;
                 color: white;
             }
+
+        .btn-success {
+            background-color: green;
+            border: 1px solid green;
+            color: white;
+        }
+
+            .btn-success:hover {
+                background-color: darkgreen;
+                border: 1px solid white;
+                color: white;
+            }
+
+        .modal {
+/*            display: none;*/
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .sweet-alert {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fefefe;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 500px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .success-animation {
+            margin: 1rem auto;
+        }
+
+        .checkmark {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 2;
+            stroke: #4bb71b;
+            stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px #4bb71b;
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+            position: relative;
+            top: 5px;
+            right: 5px;
+            margin: 0 auto;
+        }
+
+        .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #4bb71b;
+            fill: #fff;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes scale {
+            0%, 100% {
+                transform: none;
+            }
+
+            50% {
+                transform: scale3d(1.1, 1.1, 1);
+            }
+        }
+
+        @keyframes fill {
+            100% {
+                box-shadow: inset 0px 0px 0px 30px #4bb71b;
+            }
+        }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
+        <asp:Panel ID="PanelModal" CssClass="modal" runat="server" Visible="false">
+            <asp:Panel ID="PanelToast" CssClass="sweet-alert" runat="server">
+                <div class="success-animation">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                    </svg>
+                </div>
+                <h1>Good Job!</h1>
+                <asp:Label ID="LabelSweetAlert" runat="server" Text="" ForeColor="Green" Font-Bold="true">
+                </asp:Label>
+                <asp:Button ID="btnSweetAlertClose" CssClass="btn-lg btn-success" runat="server" Text="OK" BorderStyle="None" OnClick="btnSweetAlertClose_Click" />
+            </asp:Panel>
+        </asp:Panel>
         <div id="register-form">
             <h1 class="text-center">Employee Registration</h1>
             <div class="form-control">
@@ -165,20 +293,41 @@
                     <div class="form-group">
                         <asp:Label ID="LabelFullname" runat="server" Text="Full Name"></asp:Label>
                         <asp:TextBox ID="tbName" CssClass="input-text" runat="server"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvName" runat="server"
+                            ControlToValidate="tbName"
+                            ErrorMessage="Name is required"
+                            ValidationGroup="required"
+                            ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelGender" runat="server" Text="Gender"></asp:Label>
                         <asp:RadioButtonList CssClass="gender" ID="rblGender" runat="server">
                         </asp:RadioButtonList>
+                        <asp:RequiredFieldValidator ID="rfvGender" runat="server"
+                            ControlToValidate="rblGender"
+                            ErrorMessage="Gender is required"
+                            ValidationGroup="required"
+                            ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelState" runat="server" Text="State"></asp:Label>
                         <asp:DropDownList ID="ddlStates" DataTextField="state_name" AutoPostBack="true" DataValueField="state_id" OnSelectedIndexChanged="ddlStates_SelectedIndexChanged" CssClass="input-text" runat="server">
                         </asp:DropDownList>
+                        <asp:RequiredFieldValidator ID="rfvState" runat="server"
+                            ControlToValidate="ddlStates"
+                            ErrorMessage="State is required"
+                            ValidationGroup="required"
+                            InitialValue="0"
+                            ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelPincode" runat="server" Text="Pincode"></asp:Label>
                         <asp:TextBox ID="tbPincode" CssClass="input-text" runat="server"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvPincode" runat="server"
+                            ControlToValidate="tbPincode"
+                            ErrorMessage="Pincode is required"
+                            ValidationGroup="required"
+                            ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                 </div>
 
@@ -186,21 +335,42 @@
                     <div class="form-group">
                         <asp:Label ID="LabelEmail" runat="server" Text="Email"></asp:Label>
                         <asp:TextBox ID="tbEmail" CssClass="input-text" TextMode="Email" runat="server"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvEmail" runat="server"
+                            ControlToValidate="tbEmail"
+                            ErrorMessage="Email is required"
+                            ValidationGroup="required"
+                            ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelDOB" runat="server" Text="Date of Birth"></asp:Label>
                         <asp:TextBox ID="tbDOB" CssClass="input-text" TextMode="Date" runat="server"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvDOB" runat="server"
+                            ControlToValidate="tbDOB"
+                            ErrorMessage="DOB is required"
+                            ValidationGroup="required"
+                            ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
 
                     <div class="form-group">
                         <asp:Label ID="LabelCity" runat="server" Text="City"></asp:Label>
                         <asp:DropDownList ID="ddlCities" CssClass="input-text" runat="server">
                         </asp:DropDownList>
+                        <asp:RequiredFieldValidator ID="rfvCity" runat="server"
+                            ControlToValidate="ddlCities"
+                            InitialValue="0"
+                            ErrorMessage="City is required"
+                            ValidationGroup="required"
+                            ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelEmployeeType" runat="server" Text="Employee Type"></asp:Label>
                         <asp:DropDownList ID="ddlEmployeeType" CssClass="input-text" runat="server">
                         </asp:DropDownList>
+                        <asp:RequiredFieldValidator ID="rfvEmployeeType" runat="server"
+                            ControlToValidate="ddlEmployeeType"
+                            ErrorMessage="Employee Type is required"
+                            ValidationGroup="required"
+                            ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                 </div>
 
@@ -208,25 +378,46 @@
                     <div class="form-group">
                         <asp:Label ID="LabelMobile" runat="server" Text="Mobile"></asp:Label>
                         <asp:TextBox ID="tbMobile" CssClass="input-text" TextMode="Phone" runat="server"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvMobile" runat="server"
+                            ControlToValidate="tbMobile"
+                            ErrorMessage="Mobile is required"
+                            ValidationGroup="required"
+                            ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelCountry" runat="server" Text="Country"></asp:Label>
                         <asp:DropDownList ID="ddlCountries" DataTextField="country_name" AutoPostBack="true" DataValueField="country_id" OnSelectedIndexChanged="ddlCountries_SelectedIndexChanged" CssClass="input-text" runat="server"></asp:DropDownList>
+                        <asp:RequiredFieldValidator ID="rfvCountry" runat="server"
+                            ControlToValidate="ddlCountries"
+                            ErrorMessage="Country is required"
+                            ValidationGroup="required"
+                            InitialValue="0"
+                            ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelAddress" runat="server" Text="Address"></asp:Label>
                         <asp:TextBox ID="tbAddress" CssClass="input-text" runat="server"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvAddress" runat="server"
+                            ControlToValidate="tbAddress"
+                            ErrorMessage="Address is required"
+                            ValidationGroup="required"
+                            ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelJobType" runat="server" Text="Job Type"></asp:Label>
                         <asp:DropDownList ID="ddlJobType" CssClass="input-text" runat="server">
                         </asp:DropDownList>
+                        <asp:RequiredFieldValidator ID="rfvJobType" runat="server"
+                            ControlToValidate="ddlJobType"
+                            ErrorMessage="Job Type is required"
+                            ValidationGroup="required"
+                            ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                 </div>
             </div>
             <div class="btn-group">
-                <asp:Button CssClass="btn btn-primary" ID="btnUpdate" runat="server" Text="Update" OnClick="btnUpdate_Click" Visible="false" />
-                <asp:Button CssClass="btn btn-primary" ID="btnSubmit" OnClick="btnSubmit_Click" runat="server" Text="Submit" />
+                <asp:Button CssClass="btn btn-primary" ID="btnUpdate" OnClientClick="return validateDOB();" ValidationGroup="required" runat="server" Text="Update" OnClick="btnUpdate_Click" Visible="false" />
+                <asp:Button CssClass="btn btn-primary" ID="btnSubmit" OnClientClick="return validateDOB();" ValidationGroup="required" OnClick="btnSubmit_Click" runat="server" Text="Submit" />
                 <asp:Button CssClass="btn btn-secondary" ID="btnCancel" OnClick="btnCancel_Click" runat="server" Text="Cancel" />
             </div>
         </div>
@@ -261,4 +452,29 @@
         </div>
     </form>
 </body>
+    <script type="text/javascript">
+        function validateDOB() {
+            // Get the DOB value from the input field
+            var dob = document.getElementById('<%= tbDOB.ClientID %>').value;
+
+            if (dob) {
+                // Parse the DOB
+                var dobDate = new Date(dob);
+                // Get today's date
+                var today = new Date();
+                // Calculate the age
+                var age = today.getFullYear() - dobDate.getFullYear();
+                var monthDiff = today.getMonth() - dobDate.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+                    age--;
+                }
+                // Check if age is less than 18
+                if (age < 18) {
+                    alert("You must be at least 18 years old.");
+                    return false; // Prevent form submission
+                }
+            }
+            return true; // Allow form submission
+        }
+    </script>
 </html>

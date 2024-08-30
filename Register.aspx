@@ -110,7 +110,7 @@
             outline: none;
             border-radius: 5px;
         }
-        
+
         .btn-sm {
             padding: 0.2rem 0.4rem;
             outline: none;
@@ -161,6 +161,7 @@
             <h1 class="text-center">Employee Registration</h1>
             <div class="form-control">
                 <div class="form-column">
+                    <asp:HiddenField ID="hfEmpId" runat="server" />
                     <div class="form-group">
                         <asp:Label ID="LabelFullname" runat="server" Text="Full Name"></asp:Label>
                         <asp:TextBox ID="tbName" CssClass="input-text" runat="server"></asp:TextBox>
@@ -224,13 +225,14 @@
                 </div>
             </div>
             <div class="btn-group">
+                <asp:Button CssClass="btn btn-primary" ID="btnUpdate" runat="server" Text="Update" OnClick="btnUpdate_Click" Visible="false" />
                 <asp:Button CssClass="btn btn-primary" ID="btnSubmit" OnClick="btnSubmit_Click" runat="server" Text="Submit" />
                 <asp:Button CssClass="btn btn-secondary" ID="btnCancel" OnClick="btnCancel_Click" runat="server" Text="Cancel" />
             </div>
         </div>
         <div id="grid-view">
             <h2>Employee Details</h2>
-            <asp:GridView ID="EmployeeDetails" runat="server" AllowCustomPaging="true" EnableModelValidation="true" EmptyDataText="No Records" AutoGenerateColumns="false" DataKeyNames="emp_id" OnRowCommand="btnDelete_Click">
+            <asp:GridView ID="EmployeeDetails" runat="server" AllowCustomPaging="true" EnableModelValidation="true" EmptyDataText="No Records" AutoGenerateColumns="false" DataKeyNames="emp_id" OnRowCommand="EmployeeDetails_RowCommand">
                 <Columns>
                     <asp:BoundField DataField="emp_id" HeaderText="Id" />
                     <asp:BoundField DataField="emp_name" HeaderText="Name" />
@@ -249,8 +251,8 @@
                     <asp:TemplateField HeaderText="Action">
                         <ItemTemplate>
                             <div class="btn-group-action">
-                                <asp:Button ID="btnEdit" CssClass="btn-sm btn-primary" runat="server" Text="Edit" />
-                                <asp:Button ID="btnDelete" runat="server" CssClass="btn-sm btn-denger" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" Text="Delete" OnClientClick="return confirm('Are you sure?');" />
+                                <asp:Button ID="btnEdit" CssClass="btn-sm btn-primary" runat="server" CommandName="EditEmployee" CommandArgument='<%# Eval("emp_id") %>' Text="Edit" />
+                                <asp:Button ID="btnDelete" runat="server" CssClass="btn-sm btn-denger" CommandName="DeleteEmployee" CommandArgument='<%# Eval("emp_id") %>' Text="Delete" OnClientClick="return confirm('Are you sure?');" />
                             </div>
                         </ItemTemplate>
                     </asp:TemplateField>

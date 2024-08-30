@@ -214,7 +214,6 @@ namespace Employee_Registration
                 }
             }
         }
-
         private void BindGridView()
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -261,7 +260,6 @@ namespace Employee_Registration
             }
 
         }
-
         protected void ddlStates_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -282,6 +280,99 @@ namespace Employee_Registration
             }
         }
 
+        private void ClearForm()
+        {
+            hfEmpId.Value = string.Empty;
+            tbName.Text = string.Empty;
+            tbEmail.Text = string.Empty;
+            tbDOB.Text = string.Empty;
+            tbMobile.Text = null;
+            rblGender.ClearSelection();
+            ddlCountries.SelectedIndex = 0;
+            ddlStates.Items.Clear();
+            ddlStates.Items.Insert(0, new ListItem("Select State", "0"));
+            ddlCities.Items.Clear();
+            ddlCities.Items.Insert(0, new ListItem("Select City", "0"));
+            tbAddress.Text = string.Empty;
+            tbPincode.Text = string.Empty;
+            ddlEmployeeType.SelectedIndex = 0;
+            ddlJobType.SelectedIndex = 0;
+
+            // Hide the Submit button and show the Update button
+            btnSubmit.Visible = true;
+            btnUpdate.Visible = false;
+        }
+        protected void PopulateForm(int emp_id)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand("SP_GetEmployeeById_Amrut", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@emp_id", emp_id);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                // Populate form fields with data from the database
+                                hfEmpId.Value = reader["emp_id"].ToString();
+                                tbName.Text = reader["emp_name"].ToString();
+                                tbEmail.Text = reader["emp_email"].ToString();
+                                tbDOB.Text = Convert.ToDateTime(reader["dob"]).ToString("yyyy-MM-dd");
+                                tbMobile.Text = reader["emp_mobile"].ToString();
+                                rblGender.SelectedValue = reader["gender"].ToString();
+                                ddlCountries.SelectedValue = reader["country"].ToString();
+                                BindStates(Convert.ToInt32(reader["country"]));
+                                ddlStates.SelectedValue = reader["state"].ToString();
+                                BindCities(Convert.ToInt32(reader["state"]));
+                                ddlCities.SelectedValue = reader["city"].ToString();
+                                tbAddress.Text = reader["address"].ToString();
+                                tbPincode.Text = reader["pincode"].ToString();
+                                ddlEmployeeType.SelectedValue = reader["emp_type"].ToString();
+                                ddlJobType.SelectedValue = reader["job_type"].ToString();
+
+                                // Hide the Submit button and show the Update button
+                                btnSubmit.Visible = false;
+                                btnUpdate.Visible = true;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log the error
+                    Console.WriteLine("An error occurred: " + ex.Message);
+                }
+            }
+        }
+        private void DeactivateEmployee(int emp_id)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("SP_DeleteEmployee_Amrut", conn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@emp_id", emp_id);
+                        cmd.Parameters.AddWithValue("@is_active", 0);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        BindGridView();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             string name = tbName.Text;
@@ -331,55 +422,86 @@ namespace Employee_Registration
                 Console.WriteLine(ex.Message);
             }
         }
-
-        private void ClearForm()
+        protected void btnUpdate_Click(object sender, EventArgs e)
         {
-            tbName.Text = string.Empty;
-            tbEmail.Text = string.Empty;
-            tbDOB.Text = string.Empty;
-            tbMobile.Text = null;
-            rblGender.ClearSelection();
-            ddlCountries.SelectedIndex = 0;
-            ddlStates.Items.Clear();
-            ddlStates.Items.Insert(0, new ListItem("Select State", "0"));
-            ddlCities.Items.Clear();
-            ddlCities.Items.Insert(0, new ListItem("Select City", "0"));
-            tbAddress.Text = string.Empty;
-            tbPincode.Text = string.Empty;
-            ddlEmployeeType.SelectedIndex = 0;
-            ddlJobType.SelectedIndex = 0;
-        }
+            int emp_id = int.Parse(hfEmpId.Value);
+            string name = tbName.Text;
+            string email = tbEmail.Text;
+            string dob = tbDOB.Text;
+            string mobile = tbMobile.Text;
+            string gender = rblGender.Text;
+            int country = int.Parse(ddlCountries.SelectedValue);
+            int state = int.Parse(ddlStates.SelectedValue);
+            int city = int.Parse(ddlCities.SelectedValue);
+            string address = tbAddress.Text;
+            string pincode = tbPincode.Text;
+            int emp_type = int.Parse(ddlEmployeeType.SelectedValue);
+            int job_type = int.Parse(ddlJobType.SelectedValue);
 
-        protected void btnCancel_Click(object sender, EventArgs e)
-        {
-            ClearForm();
-        }
-
-        protected void btnDelete_Click(object sender, GridViewCommandEventArgs e)
-        {
-            int rowIndex = Convert.ToInt32(e.CommandArgument);
-            GridViewRow row = EmployeeDetails.Rows[rowIndex];
-            int emp_id = Convert.ToInt32(EmployeeDetails.DataKeys[rowIndex].Value);
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("SP_DeleteEmployee_Amrut", conn))
+                    using (SqlCommand cmd = new SqlCommand("SP_UpdateEmployeeById_Amrut", conn))
                     {
-                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@emp_id", emp_id);
-                        cmd.Parameters.AddWithValue("@is_active", 0);
+                        cmd.Parameters.AddWithValue("@emp_name", name);
+                        cmd.Parameters.AddWithValue("@emp_email", email);
+                        cmd.Parameters.AddWithValue("@emp_mobile", mobile);
+                        cmd.Parameters.AddWithValue("@dob", dob);
+                        cmd.Parameters.AddWithValue("@gender", gender);
+                        cmd.Parameters.AddWithValue("@emp_type", emp_type);
+                        cmd.Parameters.AddWithValue("@job_type", job_type);
+                        cmd.Parameters.AddWithValue("@address", address);
+                        cmd.Parameters.AddWithValue("@country", country);
+                        cmd.Parameters.AddWithValue("@state", state);
+                        cmd.Parameters.AddWithValue("@city", city);
+                        cmd.Parameters.AddWithValue("@pincode", pincode);
 
                         conn.Open();
                         cmd.ExecuteNonQuery();
                         BindGridView();
+                        ClearForm();
+
+                        // Switch back the buttons
+                        btnSubmit.Visible = true;
+                        btnUpdate.Visible = false;
                     }
                 }
-
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            ClearForm();
+        }
+        protected void EmployeeDetails_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    int emp_id = Convert.ToInt32(e.CommandArgument);
+                    if (e.CommandName == "EditEmployee")
+                    {
+                        PopulateForm(emp_id);
+                    }
+                    else if (e.CommandName == "DeleteEmployee")
+                    {
+                        DeactivateEmployee(emp_id);
+                    }
+                    con.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+                BindGridView();
             }
         }
     }

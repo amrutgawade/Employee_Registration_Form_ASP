@@ -181,7 +181,7 @@
             }
 
         .modal {
-/*            display: none;*/
+            /*            display: none;*/
             position: fixed;
             z-index: 1;
             left: 0;
@@ -298,6 +298,12 @@
                             ErrorMessage="Name is required"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator runat="server" ControlToValidate="tbName"
+                            ID="revName"
+                            ErrorMessage="Name is Invalid"
+                            ValidationGroup="required"
+                            ValidationExpression="^[a-zA-Z\s]{1,50}$"
+                            ForeColor="Red"></asp:RegularExpressionValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelGender" runat="server" Text="Gender"></asp:Label>
@@ -328,6 +334,12 @@
                             ErrorMessage="Pincode is required"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator runat="server" ControlToValidate="tbPincode"
+                            ID="revPincode"
+                            ErrorMessage="Pincode is Invalid"
+                            ValidationGroup="required"
+                            ValidationExpression="^\d{6}$"
+                            ForeColor="Red"></asp:RegularExpressionValidator>
                     </div>
                 </div>
 
@@ -340,6 +352,13 @@
                             ErrorMessage="Email is required"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator
+                            ID="revEmail"
+                            runat="server"
+                            ControlToValidate="tbEmail"
+                            ErrorMessage="Email is Invalid"
+                            ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$">
+</asp:RegularExpressionValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelDOB" runat="server" Text="Date of Birth"></asp:Label>
@@ -383,6 +402,13 @@
                             ErrorMessage="Mobile is required"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator
+                            ID="revMobile"
+                            runat="server"
+                            ControlToValidate="tbMobile"
+                            ErrorMessage="Please enter a valid 10-digit mobile number."
+                            ValidationExpression="^\d{10}$">
+</asp:RegularExpressionValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelCountry" runat="server" Text="Country"></asp:Label>
@@ -452,29 +478,25 @@
         </div>
     </form>
 </body>
-    <script type="text/javascript">
-        function validateDOB() {
-            // Get the DOB value from the input field
-            var dob = document.getElementById('<%= tbDOB.ClientID %>').value;
+<script type="text/javascript">
+    function validateDOB() {
+        var dob = document.getElementById('<%= tbDOB.ClientID %>').value;
 
-            if (dob) {
-                // Parse the DOB
-                var dobDate = new Date(dob);
-                // Get today's date
-                var today = new Date();
-                // Calculate the age
-                var age = today.getFullYear() - dobDate.getFullYear();
-                var monthDiff = today.getMonth() - dobDate.getMonth();
-                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
-                    age--;
-                }
-                // Check if age is less than 18
-                if (age < 18) {
-                    alert("You must be at least 18 years old.");
-                    return false; // Prevent form submission
-                }
+        if (dob) {
+            var dobDate = new Date(dob);
+            var today = new Date();
+            // Calculate the age
+            var age = today.getFullYear() - dobDate.getFullYear();
+            var monthDiff = today.getMonth() - dobDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+                age--;
             }
-            return true; // Allow form submission
+            if (age < 18) {
+                alert("You must be at least 18 years old.");
+                return false;
+            }
         }
-    </script>
+        return true;
+    }
+</script>
 </html>

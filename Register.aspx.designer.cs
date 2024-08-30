@@ -96,6 +96,15 @@ namespace Employee_Registration
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvName;
 
         /// <summary>
+        /// revName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revName;
+
+        /// <summary>
         /// LabelGender control.
         /// </summary>
         /// <remarks>
@@ -177,6 +186,15 @@ namespace Employee_Registration
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPincode;
 
         /// <summary>
+        /// revPincode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revPincode;
+
+        /// <summary>
         /// LabelEmail control.
         /// </summary>
         /// <remarks>
@@ -202,6 +220,15 @@ namespace Employee_Registration
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEmail;
+
+        /// <summary>
+        /// revEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revEmail;
 
         /// <summary>
         /// LabelDOB control.
@@ -310,6 +337,15 @@ namespace Employee_Registration
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMobile;
+
+        /// <summary>
+        /// revMobile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revMobile;
 
         /// <summary>
         /// LabelCountry control.

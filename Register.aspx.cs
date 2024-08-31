@@ -91,6 +91,7 @@ namespace Employee_Registration
                     // Log the detailed error
                     Console.WriteLine("An error occurred: " + ex.Message);
                 }
+                BindCities(0);
             }
         }
         private void BindCities(int state_id)
@@ -369,6 +370,7 @@ namespace Employee_Registration
                             cmd.ExecuteNonQuery();
                             LabelSweetAlert.Text = "Employee Deleted Successfully!";
                             LabelSweetAlert.ForeColor = System.Drawing.Color.Red;
+                            btnSweetAlertClose.BackColor = System.Drawing.Color.Red;
                             PanelModal.Visible = true;
                             BindGridView();
                         }
@@ -422,7 +424,9 @@ namespace Employee_Registration
                             conn.Open();
                             cmd.ExecuteNonQuery();
                             LabelSweetAlert.Text = "Employee Added Successfully!";
-                            PanelModal.Visible= true;
+                            LabelSweetAlert.ForeColor = System.Drawing.Color.Green;
+                            btnSweetAlertClose.BackColor = System.Drawing.Color.Green;
+                            PanelModal.Visible = true;
                             BindGridView();
                             ClearForm();
                         }
@@ -437,57 +441,62 @@ namespace Employee_Registration
         }
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
-            int emp_id = int.Parse(hfEmpId.Value);
-            string name = tbName.Text;
-            string email = tbEmail.Text;
-            string dob = tbDOB.Text;
-            string mobile = tbMobile.Text;
-            string gender = rblGender.Text;
-            int country = int.Parse(ddlCountries.SelectedValue);
-            int state = int.Parse(ddlStates.SelectedValue);
-            int city = int.Parse(ddlCities.SelectedValue);
-            string address = tbAddress.Text;
-            string pincode = tbPincode.Text;
-            int emp_type = int.Parse(ddlEmployeeType.SelectedValue);
-            int job_type = int.Parse(ddlJobType.SelectedValue);
-
-            try
+            if (Page.IsValid)
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                int emp_id = int.Parse(hfEmpId.Value);
+                string name = tbName.Text;
+                string email = tbEmail.Text;
+                string dob = tbDOB.Text;
+                string mobile = tbMobile.Text;
+                string gender = rblGender.Text;
+                int country = int.Parse(ddlCountries.SelectedValue);
+                int state = int.Parse(ddlStates.SelectedValue);
+                int city = int.Parse(ddlCities.SelectedValue);
+                string address = tbAddress.Text;
+                string pincode = tbPincode.Text;
+                int emp_type = int.Parse(ddlEmployeeType.SelectedValue);
+                int job_type = int.Parse(ddlJobType.SelectedValue);
+
+                try
                 {
-                    using (SqlCommand cmd = new SqlCommand("SP_UpdateEmployeeById_Amrut", conn))
+                    using (SqlConnection conn = new SqlConnection(connectionString))
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@emp_id", emp_id);
-                        cmd.Parameters.AddWithValue("@emp_name", name);
-                        cmd.Parameters.AddWithValue("@emp_email", email);
-                        cmd.Parameters.AddWithValue("@emp_mobile", mobile);
-                        cmd.Parameters.AddWithValue("@dob", dob);
-                        cmd.Parameters.AddWithValue("@gender", gender);
-                        cmd.Parameters.AddWithValue("@emp_type", emp_type);
-                        cmd.Parameters.AddWithValue("@job_type", job_type);
-                        cmd.Parameters.AddWithValue("@address", address);
-                        cmd.Parameters.AddWithValue("@country", country);
-                        cmd.Parameters.AddWithValue("@state", state);
-                        cmd.Parameters.AddWithValue("@city", city);
-                        cmd.Parameters.AddWithValue("@pincode", pincode);
+                        using (SqlCommand cmd = new SqlCommand("SP_UpdateEmployeeById_Amrut", conn))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@emp_id", emp_id);
+                            cmd.Parameters.AddWithValue("@emp_name", name);
+                            cmd.Parameters.AddWithValue("@emp_email", email);
+                            cmd.Parameters.AddWithValue("@emp_mobile", mobile);
+                            cmd.Parameters.AddWithValue("@dob", dob);
+                            cmd.Parameters.AddWithValue("@gender", gender);
+                            cmd.Parameters.AddWithValue("@emp_type", emp_type);
+                            cmd.Parameters.AddWithValue("@job_type", job_type);
+                            cmd.Parameters.AddWithValue("@address", address);
+                            cmd.Parameters.AddWithValue("@country", country);
+                            cmd.Parameters.AddWithValue("@state", state);
+                            cmd.Parameters.AddWithValue("@city", city);
+                            cmd.Parameters.AddWithValue("@pincode", pincode);
 
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                        LabelSweetAlert.Text = "Employee Updated Successfully!";
-                        PanelModal.Visible = true;
-                        BindGridView();
-                        ClearForm();
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                            LabelSweetAlert.Text = "Employee Updated Successfully!";
+                            LabelSweetAlert.ForeColor = System.Drawing.Color.Blue;
+                            btnSweetAlertClose.BackColor = System.Drawing.Color.Blue;
+                            PanelModal.Visible = true;
+                            BindGridView();
+                            ClearForm();
 
-                        // Switch back the buttons
-                        btnSubmit.Visible = true;
-                        btnUpdate.Visible = false;
+                            // Switch back the buttons
+                            btnSubmit.Visible = true;
+                            btnUpdate.Visible = false;
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
         }
         protected void btnCancel_Click(object sender, EventArgs e)
@@ -519,10 +528,23 @@ namespace Employee_Registration
                 BindGridView();
             }
         }
-
         protected void btnSweetAlertClose_Click(object sender, EventArgs e)
         {
             PanelModal.Visible = false;
+        }
+        protected void cvDOB_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            DateTime dob;
+            if (DateTime.TryParse(args.Value, out dob))
+            {
+                int age = DateTime.Now.Year - dob.Year;
+                if (dob > DateTime.Now.AddYears(-age)) age--;
+                args.IsValid = age >= 18;
+            }
+            else
+            {
+                args.IsValid = false;
+            }
         }
     }
 }

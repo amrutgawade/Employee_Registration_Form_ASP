@@ -5,10 +5,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Register</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet" />
     <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
         html {
             font-family: "Comfortaa", sans-serif;
             font-optical-sizing: auto;
@@ -168,20 +174,7 @@
                 color: white;
             }
 
-        .btn-success {
-            background-color: green;
-            border: 1px solid green;
-            color: white;
-        }
-
-            .btn-success:hover {
-                background-color: darkgreen;
-                border: 1px solid white;
-                color: white;
-            }
-
         .modal {
-            /*            display: none;*/
             position: fixed;
             z-index: 1;
             left: 0;
@@ -196,6 +189,7 @@
         .sweet-alert {
             display: flex;
             flex-direction: column;
+            gap: 1rem;
             position: fixed;
             top: 50%;
             left: 50%;
@@ -203,7 +197,7 @@
             background-color: #fefefe;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
+            width: 80%;
             max-width: 500px;
             text-align: center;
             border-radius: 8px;
@@ -273,16 +267,18 @@
     <form id="form1" runat="server">
         <asp:Panel ID="PanelModal" CssClass="modal" runat="server" Visible="false">
             <asp:Panel ID="PanelToast" CssClass="sweet-alert" runat="server">
-                <div class="success-animation">
+                <asp:Panel ID="PanelCheckmark" runat="server" CssClass="success-animation">
                     <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                         <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
                         <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
                     </svg>
-                </div>
-                <h1>Good Job!</h1>
+                </asp:Panel>
+
+                <asp:Label ID="LabelSweetAlertHeading" runat="server" Text="Success" ForeColor="Black" Font-Bold="true" Font-Size="X-Large">
+                </asp:Label>
                 <asp:Label ID="LabelSweetAlert" runat="server" Text="" ForeColor="Green" Font-Bold="true">
                 </asp:Label>
-                <asp:Button ID="btnSweetAlertClose" CssClass="btn-lg btn-success" runat="server" Text="OK" BorderStyle="None" OnClick="btnSweetAlertClose_Click" />
+                <asp:Button ID="btnSweetAlertClose" CssClass="btn-lg" runat="server" Text="OK" BackColor="Green" ForeColor="White" BorderStyle="None" OnClick="btnSweetAlertClose_Click" />
             </asp:Panel>
         </asp:Panel>
         <div id="register-form">
@@ -296,13 +292,17 @@
                         <asp:RequiredFieldValidator ID="rfvName" runat="server"
                             ControlToValidate="tbName"
                             ErrorMessage="Name is required"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
                         <asp:RegularExpressionValidator runat="server" ControlToValidate="tbName"
                             ID="revName"
-                            ErrorMessage="Name is Invalid"
+                            ErrorMessage="Name cannot contain number or extra-spaces"
                             ValidationGroup="required"
-                            ValidationExpression="^[a-zA-Z\s]{1,50}$"
+                            Display="Dynamic"
+                            Font-Size="Small"
+                            ValidationExpression="^[^ ][a-zA-Z\s]{1,50}[^ ]$"
                             ForeColor="Red"></asp:RegularExpressionValidator>
                     </div>
                     <div class="form-group">
@@ -312,6 +312,8 @@
                         <asp:RequiredFieldValidator ID="rfvGender" runat="server"
                             ControlToValidate="rblGender"
                             ErrorMessage="Gender is required"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
@@ -323,6 +325,8 @@
                             ControlToValidate="ddlStates"
                             ErrorMessage="State is required"
                             ValidationGroup="required"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             InitialValue="0"
                             ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
@@ -332,12 +336,16 @@
                         <asp:RequiredFieldValidator ID="rfvPincode" runat="server"
                             ControlToValidate="tbPincode"
                             ErrorMessage="Pincode is required"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
                         <asp:RegularExpressionValidator runat="server" ControlToValidate="tbPincode"
                             ID="revPincode"
-                            ErrorMessage="Pincode is Invalid"
+                            ErrorMessage="Pincode must be 6 digit i.e. 400004"
                             ValidationGroup="required"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ValidationExpression="^\d{6}$"
                             ForeColor="Red"></asp:RegularExpressionValidator>
                     </div>
@@ -350,24 +358,39 @@
                         <asp:RequiredFieldValidator ID="rfvEmail" runat="server"
                             ControlToValidate="tbEmail"
                             ErrorMessage="Email is required"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
                         <asp:RegularExpressionValidator
                             ID="revEmail"
                             runat="server"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ControlToValidate="tbEmail"
-                            ErrorMessage="Email is Invalid"
-                            ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$">
-</asp:RegularExpressionValidator>
+                            ValidationGroup="required"
+                            ErrorMessage="Email must be in format i.e. example@gmail.com"
+                            ValidationExpression="^[^ ][a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}[^ ]$">
+                        </asp:RegularExpressionValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelDOB" runat="server" Text="Date of Birth"></asp:Label>
                         <asp:TextBox ID="tbDOB" CssClass="input-text" TextMode="Date" runat="server"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rfvDOB" runat="server"
                             ControlToValidate="tbDOB"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ErrorMessage="DOB is required"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
+                        <asp:CustomValidator ID="cvDOB" runat="server"
+                            ControlToValidate="tbDOB"
+                            ErrorMessage="You must be at least 18 years old."
+                            ValidationGroup="required"
+                            Display="Dynamic"
+                            Font-Size="Small"
+                            OnServerValidate="cvDOB_ServerValidate"
+                            ForeColor="Red" />
                     </div>
 
                     <div class="form-group">
@@ -377,6 +400,8 @@
                         <asp:RequiredFieldValidator ID="rfvCity" runat="server"
                             ControlToValidate="ddlCities"
                             InitialValue="0"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ErrorMessage="City is required"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
@@ -388,6 +413,8 @@
                         <asp:RequiredFieldValidator ID="rfvEmployeeType" runat="server"
                             ControlToValidate="ddlEmployeeType"
                             ErrorMessage="Employee Type is required"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
@@ -400,15 +427,20 @@
                         <asp:RequiredFieldValidator ID="rfvMobile" runat="server"
                             ControlToValidate="tbMobile"
                             ErrorMessage="Mobile is required"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
                         <asp:RegularExpressionValidator
                             ID="revMobile"
                             runat="server"
                             ControlToValidate="tbMobile"
+                            ValidationGroup="required"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ErrorMessage="Please enter a valid 10-digit mobile number."
                             ValidationExpression="^\d{10}$">
-</asp:RegularExpressionValidator>
+                        </asp:RegularExpressionValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelCountry" runat="server" Text="Country"></asp:Label>
@@ -416,6 +448,8 @@
                         <asp:RequiredFieldValidator ID="rfvCountry" runat="server"
                             ControlToValidate="ddlCountries"
                             ErrorMessage="Country is required"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ValidationGroup="required"
                             InitialValue="0"
                             ForeColor="Red"></asp:RequiredFieldValidator>
@@ -426,8 +460,20 @@
                         <asp:RequiredFieldValidator ID="rfvAddress" runat="server"
                             ControlToValidate="tbAddress"
                             ErrorMessage="Address is required"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator
+                            ID="revAddress"
+                            runat="server"
+                            ControlToValidate="tbAddress"
+                            ValidationGroup="required"
+                            Display="Dynamic"
+                            Font-Size="Small"
+                            ErrorMessage="Address cannot have extra-spaces."
+                            ValidationExpression="^[^ ][\W\S]{1,50}[^ ]$">
+                        </asp:RegularExpressionValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="LabelJobType" runat="server" Text="Job Type"></asp:Label>
@@ -436,14 +482,16 @@
                         <asp:RequiredFieldValidator ID="rfvJobType" runat="server"
                             ControlToValidate="ddlJobType"
                             ErrorMessage="Job Type is required"
+                            Display="Dynamic"
+                            Font-Size="Small"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                 </div>
             </div>
             <div class="btn-group">
-                <asp:Button CssClass="btn btn-primary" ID="btnUpdate" OnClientClick="return validateDOB();" ValidationGroup="required" runat="server" Text="Update" OnClick="btnUpdate_Click" Visible="false" />
-                <asp:Button CssClass="btn btn-primary" ID="btnSubmit" OnClientClick="return validateDOB();" ValidationGroup="required" OnClick="btnSubmit_Click" runat="server" Text="Submit" />
+                <asp:Button CssClass="btn btn-primary" ID="btnUpdate" ValidationGroup="required" runat="server" Text="Update" OnClick="btnUpdate_Click" Visible="false" />
+                <asp:Button CssClass="btn btn-primary" ID="btnSubmit" ValidationGroup="required" OnClick="btnSubmit_Click" runat="server" Text="Submit" />
                 <asp:Button CssClass="btn btn-secondary" ID="btnCancel" OnClick="btnCancel_Click" runat="server" Text="Cancel" />
             </div>
         </div>
@@ -478,25 +526,4 @@
         </div>
     </form>
 </body>
-<script type="text/javascript">
-    function validateDOB() {
-        var dob = document.getElementById('<%= tbDOB.ClientID %>').value;
-
-        if (dob) {
-            var dobDate = new Date(dob);
-            var today = new Date();
-            // Calculate the age
-            var age = today.getFullYear() - dobDate.getFullYear();
-            var monthDiff = today.getMonth() - dobDate.getMonth();
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
-                age--;
-            }
-            if (age < 18) {
-                alert("You must be at least 18 years old.");
-                return false;
-            }
-        }
-        return true;
-    }
-</script>
 </html>

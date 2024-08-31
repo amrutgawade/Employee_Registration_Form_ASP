@@ -42,6 +42,24 @@ namespace Employee_Registration
         protected global::System.Web.UI.WebControls.Panel PanelToast;
 
         /// <summary>
+        /// PanelCheckmark control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PanelCheckmark;
+
+        /// <summary>
+        /// LabelSweetAlertHeading control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelSweetAlertHeading;
+
+        /// <summary>
         /// LabelSweetAlert control.
         /// </summary>
         /// <remarks>
@@ -258,6 +276,15 @@ namespace Employee_Registration
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDOB;
 
         /// <summary>
+        /// cvDOB control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvDOB;
+
+        /// <summary>
         /// LabelCity control.
         /// </summary>
         /// <remarks>
@@ -400,6 +427,15 @@ namespace Employee_Registration
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvAddress;
+
+        /// <summary>
+        /// revAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revAddress;
 
         /// <summary>
         /// LabelJobType control.

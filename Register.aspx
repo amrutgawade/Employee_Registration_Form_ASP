@@ -291,14 +291,14 @@
                         <asp:TextBox ID="tbName" CssClass="input-text" runat="server"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rfvName" runat="server"
                             ControlToValidate="tbName"
-                            ErrorMessage="Name is required"
+                            ErrorMessage="Full Name is required"
                             Display="Dynamic"
                             Font-Size="Small"
                             ValidationGroup="required"
                             ForeColor="Red"></asp:RequiredFieldValidator>
                         <asp:RegularExpressionValidator runat="server" ControlToValidate="tbName"
                             ID="revName"
-                            ErrorMessage="Name cannot contain number or extra-spaces"
+                            ErrorMessage="Full Name cannot contain number or extra-spaces"
                             ValidationGroup="required"
                             Display="Dynamic"
                             Font-Size="Small"
@@ -346,18 +346,18 @@
                             ValidationGroup="required"
                             Display="Dynamic"
                             Font-Size="Small"
-                            ValidationExpression="^\d{6}$"
+                            ValidationExpression="^[1-9]{1}\d{5}$"
                             ForeColor="Red"></asp:RegularExpressionValidator>
                     </div>
                 </div>
 
                 <div class="form-column">
                     <div class="form-group">
-                        <asp:Label ID="LabelEmail" runat="server" Text="Email"></asp:Label>
+                        <asp:Label ID="LabelEmail" runat="server" Text="Email Id"></asp:Label>
                         <asp:TextBox ID="tbEmail" CssClass="input-text" TextMode="Email" runat="server"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rfvEmail" runat="server"
                             ControlToValidate="tbEmail"
-                            ErrorMessage="Email is required"
+                            ErrorMessage="Email Id is required"
                             Display="Dynamic"
                             Font-Size="Small"
                             ValidationGroup="required"
@@ -369,7 +369,7 @@
                             Font-Size="Small"
                             ControlToValidate="tbEmail"
                             ValidationGroup="required"
-                            ErrorMessage="Email must be in format i.e. example@gmail.com"
+                            ErrorMessage="Email Id must be in format i.e. example@gmail.com"
                             ValidationExpression="^[^ ][a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}[^ ]$">
                         </asp:RegularExpressionValidator>
                     </div>
@@ -422,11 +422,11 @@
 
                 <div class="form-column">
                     <div class="form-group">
-                        <asp:Label ID="LabelMobile" runat="server" Text="Mobile"></asp:Label>
+                        <asp:Label ID="LabelMobile" runat="server" Text="Mobile Number"></asp:Label>
                         <asp:TextBox ID="tbMobile" CssClass="input-text" TextMode="Phone" runat="server"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rfvMobile" runat="server"
                             ControlToValidate="tbMobile"
-                            ErrorMessage="Mobile is required"
+                            ErrorMessage="Mobile Number is required"
                             Display="Dynamic"
                             Font-Size="Small"
                             ValidationGroup="required"
@@ -500,9 +500,9 @@
             <asp:GridView ID="EmployeeDetails" runat="server" AllowCustomPaging="true" EnableModelValidation="true" EmptyDataText="No Records" AutoGenerateColumns="false" DataKeyNames="emp_id" OnRowCommand="EmployeeDetails_RowCommand">
                 <Columns>
                     <asp:BoundField DataField="emp_id" HeaderText="Id" />
-                    <asp:BoundField DataField="emp_name" HeaderText="Name" />
-                    <asp:BoundField DataField="emp_email" HeaderText="Email" />
-                    <asp:BoundField DataField="emp_mobile" HeaderText="Mobile" />
+                    <asp:BoundField DataField="emp_name" HeaderText="Full Name" />
+                    <asp:BoundField DataField="emp_email" HeaderText="Email Id" />
+                    <asp:BoundField DataField="emp_mobile" HeaderText="Mobile Number" />
                     <asp:BoundField DataField="dob" HeaderText="DOB" />
                     <asp:BoundField DataField="gender" HeaderText="Gender" />
                     <asp:BoundField DataField="address" HeaderText="Address" />
